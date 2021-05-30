@@ -19,7 +19,7 @@ module inst_rom (
         if(ce == 0) begin
             inst <= 32'h0;
         end else begin
-            inst <= inst_men[addr[11:2]];      //PCæŒ‰å­—èŠ‚å¯»å€ï¼ŒPC=PC+4 å¯¹åº”ä¸€æ¡æŒ‡ä»¤è¦é™¤ä»¥4ï¼Œå³å³ç§»ä¸¤ä½
+            inst <= inst_men[addr[11:2]];      //PC°´×Ö½ÚÑ°Ö·£¬PC=PC+4 ¶ÔÓ¦Ò»ÌõÖ¸ÁîÒª³ýÒÔ4£¬¼´ÓÒÒÆÁ½Î»
         end
     end
     

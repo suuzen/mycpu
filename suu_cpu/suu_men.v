@@ -2,7 +2,7 @@
 module men (
     input      wire        rst,
 
-//ä¸ex_menç›¸è¿
+//Óëex_menÏàÁ¬
     input       wire[31:0]  i_w_reg_data,
     input       wire[4:0]   i_w_reg_addr,
     input       wire        i_wd,

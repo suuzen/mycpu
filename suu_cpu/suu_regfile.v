@@ -2,7 +2,7 @@
 module regfile (
     input       wire            rst,
     input       wire            clk,
-//ä¸idç›¸è¿(ä¸¤ä¸ªï¿½?)
+//ÓëidÏàÁ¬£¨Á½¸ö¶Á£©
     input       wire[4:0]       r_addr_1,
     input       wire[4:0]       r_addr_2,
     input       wire            rd_1,
@@ -11,23 +11,23 @@ module regfile (
     output      reg[31:0]      rdata_1,
     output      reg[31:0]      rdata_2, 
 
-//ä¸men_wbç›¸è¿ï¼ˆä¸€ä¸ªå†™ï¿½?
+//Óëmen_wbÏàÁ¬£¨Ò»¸öĞ´£©
     input       wire[31:0]      wdata,
     input       wire[4:0]       w_addr,
     input       wire            wd
 
 );
 
-//32ä½å¯„å­˜å™¨
+//32Î»¼Ä´æÆ÷
 reg[31:0] regs[0:31];
-//å†™æ“ï¿½?
+//Ğ´²Ù×÷
 always @ (posedge clk)   begin
     if(( rst == 1'b0 )&&( wd == 1'b1 )&&( w_addr != 5'h0 )) begin
         regs[w_addr] = wdata;
     end
 end
 
-//è¯»æ“ï¿½?1
+//¶Á²Ù×÷1
 always @ (*) begin
     if(rst == 1'b1) begin
 		rdata_1 <= 32'h0;
@@ -43,7 +43,7 @@ always @ (*) begin
     end
 end
 
-//è¯»æ“ï¿½?2
+//¶Á²Ù×÷2
 always @ (*) begin
     if(rst == 1'b1) begin
 		rdata_2 <= 32'h0;

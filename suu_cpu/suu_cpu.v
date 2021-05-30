@@ -6,7 +6,7 @@ module cpu (
 //与指令存储器相连
     input       wire[31:0]      rom_data_i,     
 
-    output      wire             rom_ce,      //片�??
+    output      wire             rom_ce,      //片�??
     output      wire[31:0]       rom_addr_o  //欲从指令寄存器取出的地址
 
 );
@@ -15,8 +15,6 @@ module cpu (
 assign rom_ce =rom_ce_1;
 //pc
 wire[31:0]  pc;
-
-
 
 //if_id
 wire[31:0]  id_pc;
@@ -33,8 +31,11 @@ wire[4:0]   reg_addr_1;
 wire[4:0]   reg_addr_2;
 wire        reg_rd_1;
 wire        reg_rd_2;
-
+wire        next_inst_in_delayslot_1;
+wire        now_inst_in_delayslot_1;
+//用于分支预测改变PC
 wire[31:0]  branch_offset;
+wire        branch_flag;
 
 //regfile
 wire[31:0]  rdata_1;
@@ -46,6 +47,8 @@ wire[31:0]   ex_rs_data;
 wire[31:0]   ex_rt_data;
 wire[4:0]   ex_w_reg_addr;
 wire        ex_wd;
+wire        next_inst_in_delayslot_2;
+wire        now_inst_in_delayslot_2;
 
 //ex
 wire[31:0]  w_reg_data_1;
@@ -72,7 +75,8 @@ wire        wd_3;
 pc pc0 (
     .rst(rst),
     .clk(clk),
-    .offset(branch_offset),
+    .branch_flag_i(branch_flag),
+    .branch_target_address_i(branch_offset),
     .pc(pc),
     .ce(rom_ce_1)
 );
@@ -106,18 +110,23 @@ id id1(
     .men_wd_i(wd_2),
     .men_addr_i(w_reg_addr_3),
 
+    .now_inst_in_delayslot_i(next_inst_in_delayslot_2),
+
     .aluop(aluop),
     .rs_data(rs_data),
     .rt_data(rt_data),
     .w_reg_addr(w_reg_addr_1),
     .wd(wd),
+    .next_inst_in_delayslot_o(next_inst_in_delayslot_1),
+    .now_inst_in_delayslot_o(now_inst_in_delayslot_1),
 
     .reg_addr_1(reg_addr_1),
     .reg_addr_2(reg_addr_2),
     .reg_rd_1(reg_rd_1),
     .reg_rd_2(reg_rd_2),
 
-    .branch_offset(branch_offset)
+    .branch_flag_o(branch_flag),
+    .branch_target_address_o(branch_offset)
 
 );
 //例化regfile
@@ -148,12 +157,17 @@ id_ex id_ex1(
     .id_rt_data(rt_data),
     .id_w_reg_addr(w_reg_addr_1),
     .id_wd(wd),
+    .next_id_ex_inst_in_delayslot_i(next_inst_in_delayslot_1),
+    .now_id_ex_inst_in_delayslot_i(now_inst_in_delayslot_1),
 
     .ex_aluop(ex_aluop),
     .ex_rs_data(ex_rs_data),
     .ex_rt_data(ex_rt_data),
     .ex_w_reg_addr(ex_w_reg_addr),
-    .ex_wd(ex_wd)
+    .ex_wd(ex_wd),
+    .next_id_ex_inst_in_delaylot_o(next_inst_in_delayslot_2),
+    .now_id_ex_inst_in_delaylot_o(now_inst_in_delayslot_2)
+
 );
 //例化ex
 ex ex1(
@@ -163,7 +177,8 @@ ex ex1(
     .i_ex_rt_data(ex_rt_data),
     .i_ex_w_reg_addr(ex_w_reg_addr),
     .i_ex_wd(ex_wd),
-
+    .ex_inst_in_delayslot(now_inst_in_delayslot_2),
+    
     .w_reg_data(w_reg_data_1),
     .w_reg_addr(w_reg_addr_2),
     .wd(wd_1)

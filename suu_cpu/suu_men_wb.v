@@ -3,12 +3,12 @@ module men_wb (
     input       wire        rst,
     input       wire        clk,
 
-//涓巑en鐩歌繛
+//与men相连
     input       wire[31:0]        men_wdata,
     input       wire[4:0]         men_addr,
     input       wire              men_wd,
 
-//涓巖egfile鐩歌繛
+//与regfile相连
     output      reg[31:0]         wdata,
     output      reg[4:0]          addr,
     output      reg               wd

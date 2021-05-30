@@ -3,12 +3,12 @@ module ex_men (
     input       wire            rst,
     input       wire            clk,
 
-//涓巈x鐩歌繛
+//与ex相连
     input       wire[31:0]      ex_w_reg_data,
     input       wire[4:0]       ex_w_reg_addr,
     input       wire            ex_wd,
 
-//涓巑en鐩歌繛
+//与men相连
     output      reg[31:0]       men_w_reg_data,
     output      reg[4:0]        men_w_reg_addr,
     output      reg             men_wd
