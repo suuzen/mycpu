@@ -13,6 +13,7 @@ module id_ex(
     input       wire            id_wd,
     input       wire            next_id_ex_inst_in_delayslot_i,  //下一条指令是否为延迟指令，需要传到下一条指令的译码阶段
     input       wire            now_id_ex_inst_in_delayslot_i,   //由译码阶段传来的当前阶段是否为延迟槽,传给执行阶段处理
+    input       wire[31:0]      id_inst_i,
 
     output      reg[7:0]       ex_aluop,
   //output      reg[7:0]       ex_alusel,                           //延迟槽统一到执行阶段处理
@@ -21,8 +22,10 @@ module id_ex(
     output      reg[4:0]       ex_w_reg_addr,
     output      reg            ex_wd,
     output      reg            next_id_ex_inst_in_delaylot_o,    //下一条指令是否为延迟指令，传给下一条指令的译码阶段
-    output      reg            now_id_ex_inst_in_delaylot_o
+    output      reg            now_id_ex_inst_in_delaylot_o,
+    output      reg[31:0]     id_inst_o
 );
+
 
 always @ ( posedge clk) begin
     if(rst) begin
@@ -33,6 +36,7 @@ always @ ( posedge clk) begin
         ex_wd                               <=       1'b0;
         next_id_ex_inst_in_delaylot_o       <=       1'h0;
         now_id_ex_inst_in_delaylot_o        <=       1'h0;
+        id_inst_o                              <=       32'h0;
 
     end
     else begin
@@ -43,6 +47,7 @@ always @ ( posedge clk) begin
         ex_wd                               <=      id_wd;
         next_id_ex_inst_in_delaylot_o       <=      next_id_ex_inst_in_delayslot_i;
         now_id_ex_inst_in_delaylot_o        <=      now_id_ex_inst_in_delayslot_i;
+        id_inst_o                              <=    id_inst_i;
     end
 
  end

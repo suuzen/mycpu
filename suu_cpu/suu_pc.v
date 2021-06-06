@@ -13,7 +13,7 @@ module pc(
 
 always @ (posedge clk ) begin
     if(ce ==1'b0) begin
-        pc <= 32'h0;
+        pc <= 32'h80000000;
    end else if(branch_flag_i == 1'b1) begin
         pc <= branch_target_address_i ;
    end else begin
